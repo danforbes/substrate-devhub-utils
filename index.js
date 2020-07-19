@@ -5,7 +5,7 @@ const path = require('path');
 // Variables
 const subcommands = [
   {
-    "name": 'rename-template-node',
+    "name": 'rename-node-template',
     "description": 'Rename a substrate-node-template project.',
     "usage": 'rename-node-template <name>',
   },

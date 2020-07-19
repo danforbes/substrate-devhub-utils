@@ -6,7 +6,7 @@ This is an unofficial project with utilities for working with [Substrate DevHub]
 
 This project exposes the following commands:
 
-### `rename-template-node`
+### `rename-node-template`
 
 Rename a [`substrate-node-template`](https://github.com/substrate-developer-hub/substrate-node-template) project.
 

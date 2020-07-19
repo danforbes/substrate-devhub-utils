@@ -47,7 +47,7 @@ function renamePalletCargo() {
 
 function renamePalletModule(filePath) {
   const file = fs.readFileSync(filePath, 'utf-8');
-  fs.writeFileSync(filePath, file.replace(`TemplateModule`, camel));
+  fs.writeFileSync(filePath, file.replace(/TemplateModule/g, camel));
 }
 
 function renameRuntimeCargo() {
