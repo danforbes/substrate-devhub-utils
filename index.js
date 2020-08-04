@@ -10,6 +10,11 @@ const subcommands = [
     "usage": 'rename-node-template <name>',
   },
   {
+    "name": 'copy-binaries',
+    "description": 'Copy the client and Wasm binaries to a separate folder.',
+    "usage": 'copy-binaries <destination>',
+  },
+  {
     "name": 'rename-node-template-pallet',
     "description": 'Rename the template pallet that ships with the substrate-node-template project.',
     "usage": 'rename-node-template-pallet <name>',

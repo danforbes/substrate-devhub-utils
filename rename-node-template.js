@@ -10,7 +10,7 @@ if (4 > numArgs) {
 }
 
 const newName = process.argv[3];
-const underbarred = newName.replace('-', '_');
+const underbarred = newName.replace(/-/g, '_');
 const nameRegex = /^[a-z]+[a-z0-9\-]*[a-z0-9]+$/;
 if (!newName.match(nameRegex)) {
   console.error(`You must provide a new name that matches ${nameRegex}.`);

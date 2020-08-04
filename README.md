@@ -1,3 +1,5 @@
+[![Compatible with Substrate v2.0.0-rc5](https://img.shields.io/badge/Substrate-v2.0.0--rc5-E6007A)](https://github.com/paritytech/substrate/tree/v2.0.0-rc5+2)
+
 # Substrate DevHub Utils
 
 This is an unofficial project with utilities for working with [Substrate DevHub](https://substrate.dev/) resources.
@@ -5,6 +7,10 @@ This is an unofficial project with utilities for working with [Substrate DevHub]
 ## Commands
 
 This project exposes the following commands:
+
+### `copy-binaries`
+
+Copy the client and Wasm binaries to a separate folder.
 
 ### `rename-node-template`
 

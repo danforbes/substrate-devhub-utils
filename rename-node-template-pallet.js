@@ -10,7 +10,7 @@ if (4 > numArgs) {
 }
 
 const newName = process.argv[3];
-const underbarred = newName.replace('-', '_');
+const underbarred = newName.replace(/-/g, '_');
 const camel = newName[0].toUpperCase() + newName.slice(1)
              .replace(/([-][a-z])/g, (firstLetter) => firstLetter.toUpperCase().replace('-', ''));
 const nameRegex = /^[a-z]+[a-z0-9\-]*[a-z0-9]+$/;
@@ -53,7 +53,7 @@ function renamePalletModule(filePath) {
 function renameRuntimeCargo() {
   const runtimeCargoPath = path.join(cwd, 'runtime', 'Cargo.toml');
   const runtimeCargo = fs.readFileSync(runtimeCargoPath, 'utf-8');
-  fs.writeFileSync(runtimeCargoPath, runtimeCargo.replace(`[dependencies.template]`, `[dependencies.${underbarred}]`)
+  fs.writeFileSync(runtimeCargoPath, runtimeCargo.replace(`[dependencies.template]`, `[dependencies.${newName}]`)
                                                  .replace(`'pallet-template'`, `'${newName}'`)
                                                  .replace(`'../pallets/template'`, `'../pallets/${newName}'`)
                                                  .replace(`'template/std',`, `'${newName}/std'`));
@@ -65,7 +65,7 @@ function renameRuntimeLib() {
   fs.writeFileSync(runtimeLibPath, runtimeLib.replace(`TemplateModule`, camel)
                                              .replace(`/// Importing a template pallet`, `/// Importing a local pallet`)
                                              .replace('/// Used for the module template in `./template.rs`', `/// Implement the ${newName} pallet`)
-                                             .replace(/template/g, newName));
+                                             .replace(/template/g, underbarred));
 }
 
 function renameRootCargo() {
