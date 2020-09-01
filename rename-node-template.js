@@ -20,6 +20,7 @@ if (!newName.match(nameRegex)) {
 renameNodeCargo();
 renameChainSpec();
 renameCommand();
+renameRpc();
 renameService();
 renameRuntimeCargo();
 renameRuntimeLib();
@@ -45,6 +46,13 @@ function renameCommand() {
   const commandPath = path.join(cwd, 'node', 'src', 'command.rs');
   const command = fs.readFileSync(commandPath, 'utf-8');
   fs.writeFileSync(commandPath, command.replace('"Substrate Node"', `"${newName}"`)
+                                       .replace('node_template_runtime::VERSION', `${underbarred}_runtime::VERSION`));
+}
+
+function renameRpc() {
+  const commandPath = path.join(cwd, 'node', 'src', 'rpc.rs');
+  const command = fs.readFileSync(commandPath, 'utf-8');
+  fs.writeFileSync(commandPath, command.replace('node_template_runtime', `${underbarred}_runtime`)
                                        .replace('node_template_runtime::VERSION', `${underbarred}_runtime::VERSION`));
 }
 

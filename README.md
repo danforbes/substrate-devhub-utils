@@ -1,4 +1,4 @@
-[![Compatible with Substrate v2.0.0-rc5](https://img.shields.io/badge/Substrate-v2.0.0--rc5-E6007A)](https://github.com/paritytech/substrate/tree/v2.0.0-rc5+2)
+[![Compatible with Substrate v2.0.0-rc6](https://img.shields.io/badge/Substrate-v2.0.0--rc6-E6007A)](https://github.com/paritytech/substrate/tree/v2.0.0-rc6)
 
 # Substrate DevHub Utils
 
