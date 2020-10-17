@@ -1,8 +1,9 @@
-[![Compatible with Substrate v2.0.0-rc6](https://img.shields.io/badge/Substrate-v2.0.0--rc6-E6007A)](https://github.com/paritytech/substrate/tree/v2.0.0-rc6)
+[![Compatible with Substrate v2.0.0](https://img.shields.io/badge/Substrate-v2.0.0-E6007A)](https://github.com/paritytech/substrate/tree/v2.0.0)
 
-# Substrate DevHub Utils
+# Substrate Developer Hub Utils
 
-This is an unofficial project with utilities for working with [Substrate DevHub](https://substrate.dev/) resources.
+This is an unofficial project with utilities for working with
+[Substrate Developer Hub](https://substrate.dev/) resources.
 
 ## Commands
 

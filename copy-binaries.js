@@ -8,7 +8,7 @@ const cwd = process.cwd();
 
 const numArgs = process.argv.length;
 if (4 > numArgs) {
-  console.error('You must provide the path where the binaries should be copies.');
+  console.error('You must provide the path where the binaries should be copied.');
   process.exit(5);
 }
 

@@ -10,16 +10,18 @@ if (4 > numArgs) {
 }
 
 const newName = process.argv[3];
-const underbarred = newName.replace(/-/g, '_');
-const camel = newName[0].toUpperCase() + newName.slice(1)
-             .replace(/([-][a-z])/g, (firstLetter) => firstLetter.toUpperCase().replace('-', ''));
-const nameRegex = /^[a-z]+[a-z0-9\-]*[a-z0-9]+$/;
+const nameRegex = /^pallet-[a-z]+[a-z0-9\-]*[a-z0-9]+$/;
 if (!newName.match(nameRegex)) {
   console.error(`You must provide a new name that matches ${nameRegex}.`);
   process.exit(4);
 }
 
-const newPath = path.join(cwd, 'pallets', newName);
+const short = newName.substring('pallet-'.length);
+const underbarred = newName.replace(/-/g, '_');
+const camel = short[0].toUpperCase() + short.slice(1)
+             .replace(/([-][a-z])/g, (firstLetter) => firstLetter.toUpperCase().replace('-', ''));
+
+const newPath = path.join(cwd, 'pallets', short);
 const newSrcPath = path.join(newPath, 'src');
 
 movePalletDir();
@@ -32,15 +34,15 @@ renameRuntimeLib();
 renameRootCargo();
 
 function movePalletDir() {
-  fs.renameSync(newPath.replace(newName, 'template'), newPath);
+  fs.renameSync(newPath.replace(short, 'template'), newPath);
 }
 
 function renamePalletCargo() {
   const palletCargoPath = path.join(newPath, 'Cargo.toml');
   const nodeCargo = fs.readFileSync(palletCargoPath, 'utf-8');
   fs.writeFileSync(palletCargoPath, nodeCargo.replace(`authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']`, `authors = ['']`)
-                                           .replace(`description = 'FRAME pallet template'`, `description = ''`)
-                                           .replace(`homepage = 'https://substrate.io'`, `homepage = ''`)
+                                           .replace(`description = 'FRAME pallet template for defining custom runtime logic.'`, `description = ''`)
+                                           .replace(`homepage = 'https://substrate.dev'`, `homepage = ''`)
                                            .replace(/name = 'pallet-template'/g, `name = '${newName}'`)
                                            .replace(`repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'`, `repository = ''`));
 }
@@ -53,23 +55,25 @@ function renamePalletModule(filePath) {
 function renameRuntimeCargo() {
   const runtimeCargoPath = path.join(cwd, 'runtime', 'Cargo.toml');
   const runtimeCargo = fs.readFileSync(runtimeCargoPath, 'utf-8');
-  fs.writeFileSync(runtimeCargoPath, runtimeCargo.replace(`[dependencies.template]`, `[dependencies.${newName}]`)
-                                                 .replace(`'pallet-template'`, `'${newName}'`)
-                                                 .replace(`'../pallets/template'`, `'../pallets/${newName}'`)
-                                                 .replace(`'template/std',`, `'${newName}/std'`));
+  fs.writeFileSync(runtimeCargoPath, runtimeCargo.replace(/pallet-template/g, newName)
+                                                 .replace(`'../pallets/template'`, `'../pallets/${short}'`));
 }
 
 function renameRuntimeLib() {
   const runtimeLibPath = path.join(cwd, 'runtime', 'src', 'lib.rs');
   const runtimeLib = fs.readFileSync(runtimeLibPath, 'utf-8');
   fs.writeFileSync(runtimeLibPath, runtimeLib.replace(`TemplateModule`, camel)
-                                             .replace(`/// Importing a template pallet`, `/// Importing a local pallet`)
-                                             .replace('/// Used for the module template in `./template.rs`', `/// Implement the ${newName} pallet`)
-                                             .replace(/template/g, underbarred));
+                                             .replace(`/// Import the template pallet.`, `/// Import the ${camel} pallet.`)
+                                             .replace('/// Configure the template pallet in pallets/template.',
+                                                      `/// Configure the ${camel} pallet in pallets/${short}.`)
+                                             .replace('// Include the custom logic from the template pallet in the runtime.',
+                                                      `// Include the custom logic from the ${camel} pallet in the runtime.`)
+                                             .replace(/pallet_template/g, underbarred)
+                                             .replace(/template/g, short));
 }
 
 function renameRootCargo() {
   const rootCargoPath = path.join(cwd, 'Cargo.toml');
   const rootCargo = fs.readFileSync(rootCargoPath, 'utf-8');
-  fs.writeFileSync(rootCargoPath, rootCargo.replace(`'pallets/template'`, `'pallets/${newName}'`));
+  fs.writeFileSync(rootCargoPath, rootCargo.replace(`'pallets/template'`, `'pallets/${short}'`));
 }

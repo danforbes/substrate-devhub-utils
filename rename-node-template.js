@@ -9,13 +9,15 @@ if (4 > numArgs) {
   process.exit(3);
 }
 
-const newName = process.argv[3];
-const underbarred = newName.replace(/-/g, '_');
-const nameRegex = /^[a-z]+[a-z0-9\-]*[a-z0-9]+$/;
-if (!newName.match(nameRegex)) {
+const origNewName = process.argv[3];
+const nameRegex = /^[A-Za-z]+[a-z0-9\-]*[a-z0-9]+$/;
+if (!origNewName.match(nameRegex)) {
   console.error(`You must provide a new name that matches ${nameRegex}.`);
   process.exit(4);
 }
+
+const newName = origNewName.toLowerCase();
+const underbarred = newName.replace(/-/g, '_');
 
 renameNodeCargo();
 renameChainSpec();
@@ -29,11 +31,11 @@ function renameNodeCargo() {
   const nodeCargoPath = path.join(cwd, 'node', 'Cargo.toml');
   const nodeCargo = fs.readFileSync(nodeCargoPath, 'utf-8');
   fs.writeFileSync(nodeCargoPath, nodeCargo.replace(`authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']`, `authors = ['']`)
-                                           .replace(`description = 'Substrate node template'`, `description = ''`)
-                                           .replace(`homepage = 'https://substrate.io'`, `homepage = ''`)
+                                           .replace(`description = 'A fresh FRAME-based Substrate node, ready for hacking.'`, `description = ''`)
+                                           .replace(`homepage = 'https://substrate.dev'`, `homepage = ''`)
                                            .replace(/name = 'node-template'/g, `name = '${newName}'`)
                                            .replace(`repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'`, `repository = ''`)
-                                           .replace('[dependencies.node-template-runtime]', `[dependencies.${newName}-runtime]`));
+                                           .replace(/node-template-runtime/g, `${newName}-runtime`));
 }
 
 function renameChainSpec() {
@@ -45,7 +47,8 @@ function renameChainSpec() {
 function renameCommand() {
   const commandPath = path.join(cwd, 'node', 'src', 'command.rs');
   const command = fs.readFileSync(commandPath, 'utf-8');
-  fs.writeFileSync(commandPath, command.replace('"Substrate Node"', `"${newName}"`)
+  fs.writeFileSync(commandPath, command.replace('node_template_runtime::Block', `${underbarred}_runtime::Block`)
+                                       .replace('"Substrate Node"', `"${origNewName}"`)
                                        .replace('node_template_runtime::VERSION', `${underbarred}_runtime::VERSION`));
 }
 
@@ -66,7 +69,7 @@ function renameRuntimeCargo() {
   const runtimeCargoPath = path.join(cwd, 'runtime', 'Cargo.toml');
   const runtimeCargo = fs.readFileSync(runtimeCargoPath, 'utf-8');
   fs.writeFileSync(runtimeCargoPath, runtimeCargo.replace(`authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']`, `authors = ['']`)
-                                                 .replace(`homepage = 'https://substrate.io'`, `homepage = ''`)
+                                                 .replace(`homepage = 'https://substrate.dev'`, `homepage = ''`)
                                                  .replace(`name = 'node-template-runtime'`, `name = '${newName}-runtime'`)
                                                  .replace(`repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'`, `repository = ''`));
 }
